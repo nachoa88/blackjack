@@ -1,0 +1,9 @@
+services:
+  vue-app:
+    container_name: blackjack-front
+    build:
+      context: .
+    volumes:
+      - .:/blackjack-front
+    ports:
+      - "5173:5173"
