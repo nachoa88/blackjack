@@ -1,21 +1,17 @@
-# Sprint 5 - Laravel API REST
+# BLACKJACK - Back:Laravel API REST / Front:VueJS
 Utilitzat `docker compose` command amb el fitxer `docker-compose.yml` i un `Dockerfile` personalitzat per crear els contenidors de PHP i Laravel i el de MySQL amb les conexions corresponents. Instal·lat Laravel amb PHP composer: `composer create-project laravel/laravel test-app`.
 
-### Laravel MVC
-## Nivell 1 - Funcionalitats bàsiques + Seguretat + Testing
+### Laravel MVC ---> S'ha de modificar la informació i anar actualitzant.
+## Funcionalitats bàsiques + Seguretat + Testing
 1) Instal·lat passport amb `php artisan install:api --passport`i Spatie amb `composer require spatie/laravel-permission`, per ùltim he publicat la migració amb `php artisan vendor:publish --provider="Spatie\Permission\PermissionServiceProvider"`. Com he escollit treballar amb UUID, s'han de fer viares modificacions, veure la documentació de Spatie.
 La estructura de dades compta amb les seves migracions i seeds per poder fer una prova del funcionament de la API.
 S'han definit els rols i permissos per cada endpoint. Hi ha un primer control general d'autenticació mitjançant el `middleware` i després un més específic amb `Policies`, en les quals es verifica si el usuari que vol accedir a l'endpoint té les acreditacions necessàries.
 
 2) Testing: Modificat `phpunit.xml` per utilitzar `SQLite` per fer els tests. També s'han afegit algunes dades en `TestCase.php` per fer servir el trait `RefreshDatabase` que farà les migracions, el `$seed` i `accessToken`. La estructura dels tests serà la mateixa que els controllers (Controllers, Controllers/Auth, etc.).      
 
-## Nivell 2 - Documentació + deploy
+## Documentació en Swagger
 1) Documentada l'API amb `Swagger`, feta una configuració bàsica per definir info, server, security schema i tags. També he afegit els schemas pels models d'usuaris i games.
-2) Pendent: Deploy API.
 
-## Nivell 3 - Desplegar projecte + client front-end
-1) Pendent: Producció.
-2) Pendent: Front-End.
 
 
 ## Fet amb Blackjack enlloc de daus

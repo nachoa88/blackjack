@@ -1,9 +1,8 @@
 services:
-    app:
+    laravel-app:
+        container_name: blackjack-api
         build:
             context: .
-        image: sprint5
-        container_name: laravel_api
         ports:
             - "8000:80"
         volumes:
@@ -13,7 +12,7 @@ services:
 
     db:
         image: mysql:8.0
-        container_name: laravel_db
+        container_name: blackjack-db
         ports:
             - "3306:3306"
         environment:
