@@ -1,0 +1,10 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.nav-link {
+  @apply font-semibold text-sm text-slate-200 uppercase tracking-widest;
+}
+.nav-link-hover:hover {
+  @apply text-teal-300 transition duration-150 ease-in-out;
+}
