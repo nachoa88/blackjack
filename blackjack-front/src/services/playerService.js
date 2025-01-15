@@ -1,15 +1,7 @@
-import { fetchApi } from "./api";
+import api from "./api";
 
 export const playerService = {
-  async getRanking() {
-    return fetchApi("/players/ranking");
-  },
-
-  async getWinner() {
-    return fetchApi("/players/ranking/winner");
-  },
-
-  async getLoser() {
-    return fetchApi("/players/ranking/loser");
-  },
+  getRanking: () => api.get("/players/ranking"),
+  getWinner: () => api.get("/players/ranking/loser"),
+  getLoser: () => api.get("/players/ranking/winner"),
 };

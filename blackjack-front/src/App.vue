@@ -20,7 +20,7 @@ const toggleDropdown = () => {
         <!-- Navigation Links -->
         <div class="flex items-center gap-6">
           <RouterLink to="/" class="inline-flex items-center nav-link nav-link-hover">Home</RouterLink>
-          <RouterLink to="/ranking" class="inline-flex items-center nav-link nav-link-hover">Rankings</RouterLink>
+          <RouterLink to="/ranking" class="inline-flex items-center nav-link nav-link-hover">Ranking</RouterLink>
           <RouterLink to="/players" class="inline-flex items-center nav-link nav-link-hover">Players</RouterLink>
 
           <!-- Authenticated user dropdown -->
