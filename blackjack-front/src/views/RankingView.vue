@@ -1,6 +1,7 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import { playerService } from "@/services/playerService";
+import RankingTable from "@/components/ranking/RankingTable.vue";
 
 const ranking = ref(null);
 const winner = ref(null);
@@ -38,12 +39,6 @@ onMounted(async () => {
 
     <div v-else>
       <section>
-        <h2 class="text-xl">Overall Ranking</h2>
-        <!-- JSON.stringify: display the object in a readable format, null is used to remove the replacer function, and 2 is used to add indentation -->
-        <pre>{{ JSON.stringify(ranking, null, 2) }}</pre>
-      </section>
-
-      <section>
         <h2 class="text-xl">Best Player</h2>
         <div>Nickname: {{ winner["user_nickname"] }}</div>
       </section>
@@ -52,6 +47,8 @@ onMounted(async () => {
         <h2 class="text-xl">Worst Player</h2>
         <pre>{{ JSON.stringify(loser) }}</pre>
       </section>
+      
+      <RankingTable :players="ranking.ranking" />
     </div>
   </div>
 </template>
