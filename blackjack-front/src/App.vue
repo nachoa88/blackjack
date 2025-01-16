@@ -1,10 +1,26 @@
 <script setup>
 import { RouterLink, RouterView } from "vue-router";
-import { ref } from "vue";
+import { ref, computed } from "vue";
+import { useRouter } from "vue-router";
+import { useAuthStore } from "@/stores/authStore";
 
 const showDropdown = ref(false);
+const authStore = useAuthStore();
+console.log('Initial token:', authStore.token.value); // Debug log
+
+const isLoggedIn = computed(() => {
+  console.log('Computing isLoggedIn, token:', authStore.token.value); // Debug log
+  return !!authStore.token.value;
+});
+const router = useRouter();
+
 const toggleDropdown = () => {
   showDropdown.value = !showDropdown.value;
+};
+
+const handleLogout = () => {
+  authStore.logout();
+  router.push("/");
 };
 </script>
 
@@ -12,7 +28,7 @@ const toggleDropdown = () => {
   <div class="min-h-screen flex flex-col bg-slate-700">
     <!-- Navbar -->
     <header>
-      <div class="flex justify-center p-4 m-4  bg-cyan-200/20 rounded-lg shadow-lg">
+      <div class="flex justify-center p-4 m-4 bg-cyan-200/20 rounded-lg shadow-lg">
         <!-- Logo -->
         <div class="flex items-center text-slate-200 px-6">
           <a href="/"> Logo Here! </a>
@@ -49,7 +65,7 @@ const toggleDropdown = () => {
           </div> -->
 
           <!-- Guest user login and register -->
-          <div class="flex gap-4">
+          <div v-if="!isLoggedIn" class="flex gap-4">
             <RouterLink
               to="/login"
               class="inline-flex items-center nav-link bg-teal-600 hover:bg-teal-700 rounded-lg px-4 py-2"
@@ -63,8 +79,15 @@ const toggleDropdown = () => {
               Register
             </RouterLink>
           </div>
+          <div v-else>
+            <button
+              @click="handleLogout"
+              class="inline-flex items-center nav-link bg-red-700 hover:bg-red-800 rounded-lg px-4 py-2"
+            >
+              Logout
+            </button>
+          </div>
         </div>
-
         <!-- Hamburger Menu -->
       </div>
     </header>

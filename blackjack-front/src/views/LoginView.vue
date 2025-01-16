@@ -1,11 +1,36 @@
 <script setup>
 import { ref } from "vue";
+import { useRouter } from "vue-router";
+import { useAuthStore } from "@/stores/authStore";
+import { authService } from "@/services/authService";
 
 const email = ref("");
 const password = ref("");
 const error = ref(null);
 const loading = ref(false);
 
+const router = useRouter();
+const authStore = useAuthStore();
+
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  loading.value = true;
+  error.value = null;
+
+  try {
+    const token = await authService.login({
+      email: email.value,
+      password: password.value,
+    });
+
+    authStore.setToken(token);
+    router.push("/");
+  } catch (err) {
+    error.value = err.message;
+  } finally {
+    loading.value = false;
+  }
+};
 </script>
 
 <template>
@@ -16,6 +41,10 @@ const loading = ref(false);
 
     <div class="sm:mx-auto sm:w-full sm:max-w-sm bg-sky-950/50 rounded-lg shadow-lg p-4">
       <h2 class="mt-4 text-center text-2xl font-bold text-slate-200">Sign in to your account</h2>
+
+      <div v-if="error" class="mt-4 text-red-500 nav-link text-center">
+        {{ error }}
+      </div>
 
       <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-sm">
         <form @submit="handleSubmit" class="space-y-6">

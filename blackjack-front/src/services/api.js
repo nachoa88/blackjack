@@ -11,7 +11,7 @@ export default api;
 
 // Interceptors could be applied in a separated file if the application grows.
 
-// Request interceptor 
+// Request interceptor
 api.interceptors.response.use(
   // Success handler - return data directly
   (response) => response.data,
@@ -43,5 +43,11 @@ api.interceptors.response.use(
   }
 );
 
-// Later I'll need to add the Auth interceptor
-
+// Auth interceptor
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem("token");
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
