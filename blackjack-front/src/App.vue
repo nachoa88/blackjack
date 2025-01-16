@@ -9,10 +9,10 @@ const toggleDropdown = () => {
 </script>
 
 <template>
-  <div class="min-h-screen flex flex-col bg-slate-400">
+  <div class="min-h-screen flex flex-col bg-slate-700">
     <!-- Navbar -->
     <header>
-      <div class="flex justify-center p-4 m-4 bg-slate-600 rounded-lg shadow-lg">
+      <div class="flex justify-center p-4 m-4  bg-cyan-200/20 rounded-lg shadow-lg">
         <!-- Logo -->
         <div class="flex items-center text-slate-200 px-6">
           <a href="/"> Logo Here! </a>
@@ -71,13 +71,13 @@ const toggleDropdown = () => {
 
     <!-- Main Content -->
     <main class="flex flex-1">
-      <div class="flex-1 m-4 bg-slate-600 rounded-lg shadow-lg">
+      <div class="flex-1 m-4 bg-cyan-200/20 rounded-lg shadow-lg">
         <RouterView />
       </div>
     </main>
 
     <!-- Footer -->
-    <footer class="m-4 bg-slate-600 rounded-lg shadow-lg">
+    <footer class="m-4 bg-cyan-200/20 rounded-lg shadow-lg">
       <div
         class="w-full mx-auto max-w-screen-xl p-4 flex flex-col items-center lg:flex-row lg:items-center lg:justify-between"
       >
