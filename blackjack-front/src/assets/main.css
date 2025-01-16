@@ -8,3 +8,7 @@
 .nav-link-hover:hover {
   @apply text-teal-300 transition duration-150 ease-in-out;
 }
+
+.stats-title {
+  @apply text-lg md:text-xl mb-4 uppercase font-semibold text-center tracking-widest underline underline-offset-4;
+}
