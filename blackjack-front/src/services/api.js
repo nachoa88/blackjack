@@ -25,17 +25,14 @@ api.interceptors.response.use(
 
     switch (error.response.status) {
       case 400:
-        // Bad request - validation errors
         console.error("Bad request:", error.response.data);
         return Promise.reject(error.response.data);
 
       case 404:
-        // Not found - ranking doesn't exist
         console.error("Resource not found");
         return Promise.reject(new Error("Resource not found"));
 
       case 500:
-        // Server error
         console.error("Server error:", error.response.data);
         return Promise.reject(new Error("Internal server error"));
 

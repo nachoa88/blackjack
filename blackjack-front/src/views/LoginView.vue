@@ -1,10 +1,69 @@
-<script setup></script>
+<script setup>
+import { ref } from "vue";
+
+const email = ref("");
+const password = ref("");
+const error = ref(null);
+const loading = ref(false);
+
+</script>
 
 <template>
   <div class="w-full mx-auto max-w-screen-xl p-4">
-    <h1 class="text-slate-200 mb-4 text-3xl md:text-4xl lg:text-5xl font-semibold">
-      Here will go the <span class="text-sky-600 dark:text-teal-400 font-extrabold">Login Form</span>
+    <h1 class="text-slate-200 my-4 md:my-8 text-3xl md:text-4xl lg:text-5xl font-semibold text-center">
+      Do you have an account? <span class="text-teal-400 font-extrabold">Log In!</span>
     </h1>
+
+    <div class="sm:mx-auto sm:w-full sm:max-w-sm bg-sky-950/50 rounded-lg shadow-lg p-4">
+      <h2 class="mt-4 text-center text-2xl font-bold text-slate-200">Sign in to your account</h2>
+
+      <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-sm">
+        <form @submit="handleSubmit" class="space-y-6">
+          <div>
+            <label for="email" class="block text-sm/6 font-medium text-slate-200">Email address</label>
+            <div class="mt-2">
+              <input
+                v-model="email"
+                type="email"
+                name="email"
+                id="email"
+                required
+                class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-teal-400 sm:text-sm/6"
+              />
+            </div>
+          </div>
+
+          <div>
+            <div class="flex items-center justify-between">
+              <label for="password" class="block text-sm/6 font-medium text-slate-200">Password</label>
+              <div class="text-sm">
+                <a href="#" class="font-semibold text-teal-400 hover:text-teal-300">Forgot password?</a>
+              </div>
+            </div>
+            <div class="mt-2">
+              <input
+                v-model="password"
+                type="password"
+                name="password"
+                id="password"
+                required
+                class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-teal-400 sm:text-sm/6"
+              />
+            </div>
+          </div>
+
+          <div>
+            <button
+              type="submit"
+              :disabled="loading"
+              class="flex w-full justify-center nav-link bg-teal-600 hover:bg-teal-700 rounded-lg px-4 py-2 mt-8 mb-4"
+            >
+              {{ loading ? "Loggin in..." : "Log in" }}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
   </div>
 </template>
 

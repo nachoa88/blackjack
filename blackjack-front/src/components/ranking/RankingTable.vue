@@ -13,7 +13,7 @@ defineProps({
       You're neither the best nor the worst player?
       <span class="underline decoration-4 decoration-teal-400 font-semibold">See your stats!</span>
     </h2>
-    <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+    <div class="relative overflow-x-auto shadow-lg sm:rounded-lg">
       <table class="w-full text-sm text-left text-slate-200">
         <thead class="text-sm uppercase bg-sky-950/50 border-b border-sky-950/70">
           <tr>
