@@ -1,17 +1,13 @@
 <script setup>
 import { RouterLink, RouterView } from "vue-router";
-import { ref, computed } from "vue";
+import { ref } from "vue";
 import { useRouter } from "vue-router";
-import { useAuthStore } from "@/stores/authStore";
+import { useAuthStore } from "@/stores/useAuthStore";
 
 const showDropdown = ref(false);
-const authStore = useAuthStore();
-console.log('Initial token:', authStore.token.value); // Debug log
 
-const isLoggedIn = computed(() => {
-  console.log('Computing isLoggedIn, token:', authStore.token.value); // Debug log
-  return !!authStore.token.value;
-});
+// Not able to make the state of token be reactive for nav buttons, maybe because they're not reloading. Works after pressing F5
+const authStore = useAuthStore();
 const router = useRouter();
 
 const toggleDropdown = () => {
@@ -65,7 +61,7 @@ const handleLogout = () => {
           </div> -->
 
           <!-- Guest user login and register -->
-          <div v-if="!isLoggedIn" class="flex gap-4">
+          <div v-if="!authStore.isLoggedIn" class="flex gap-4">
             <RouterLink
               to="/login"
               class="inline-flex items-center nav-link bg-teal-600 hover:bg-teal-700 rounded-lg px-4 py-2"

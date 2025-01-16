@@ -1,5 +1,5 @@
 <script setup>
-import { useAuthStore } from "@/stores/authStore";
+import { useAuthStore } from "@/stores/useAuthStore";
 
 const authStore = useAuthStore();
 </script>
@@ -10,7 +10,7 @@ const authStore = useAuthStore();
       This is <span class="text-teal-400 font-extrabold">Home Page</span>
     </h1>
     <!-- Guest welcome -->
-    <h2 v-if="!authStore.token.value" class="text-lg md:text-2xl text-slate-200 my-4 md:my-8">
+    <h2 v-if="!authStore.isLoggedIn" class="text-lg md:text-2xl text-slate-200 my-4 md:my-8">
       Welcome! This is the guest home page. As a guest you can only see the ranking.
       <span class="underline decoration-4 decoration-teal-400 font-semibold"
         >Please login or register to start playing.</span
