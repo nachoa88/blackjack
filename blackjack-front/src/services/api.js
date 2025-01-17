@@ -9,7 +9,7 @@ const api = axios.create({
 });
 export default api;
 
-// Interceptors could be applied in a separated file if the application grows.
+// Interceptors could be applied in a separated file if the application gets bigger.
 
 // Request interceptor
 api.interceptors.response.use(
@@ -28,26 +28,43 @@ api.interceptors.response.use(
         console.error("Bad request:", error.response.data);
         return Promise.reject(error.response.data);
 
+      case 401:
+        console.error("Unauthorized access");
+        return Promise.reject(error.response.data);
+
+      case 403:
+        console.error("Forbidden access:", error.response.data);
+        return Promise.reject(error.response.data);
+
       case 404:
-        console.error("Resource not found");
-        return Promise.reject(new Error("Resource not found"));
+        console.error("Resource not found:", error.response.data);
+        return Promise.reject(error.response.data);
+
+      case 422:
+        console.error("Validation error:", error.response.data);
+        return Promise.reject(error.response.data);
 
       case 500:
         console.error("Server error:", error.response.data);
-        return Promise.reject(new Error("Internal server error"));
+        return Promise.reject(error.response.data);
 
       default:
         console.error("API error:", error.response.data);
-        return Promise.reject(error);
+        return Promise.reject(error.response.data);
     }
   }
 );
 
 // Auth interceptor
-api.interceptors.request.use((config) => {
-  const token = localStorage.getItem("token");
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
+api.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
   }
-  return config;
-});
+);

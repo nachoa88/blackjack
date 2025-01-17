@@ -5,8 +5,6 @@ import { useRouter } from "vue-router";
 import { useAuthStore } from "@/stores/useAuthStore";
 
 const showDropdown = ref(false);
-
-// Not able to make the state of token be reactive for nav buttons, maybe because they're not reloading. Works after pressing F5
 const authStore = useAuthStore();
 const router = useRouter();
 

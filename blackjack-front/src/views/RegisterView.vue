@@ -1,11 +1,33 @@
 <script setup>
 import { ref } from "vue";
+import { useRouter } from "vue-router";
+import { authService } from "@/services/authService";
 
+const router = useRouter();
 const nickname = ref("");
 const email = ref("");
 const password = ref("");
 const error = ref(null);
 const loading = ref(false);
+
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  loading.value = true;
+  error.value = null;
+
+  try {
+    await authService.register({
+      nickname: nickname.value,
+      email: email.value,
+      password: password.value,
+    });
+    router.push("/login"); // Redirect to login after successful registration
+  } catch (err) {
+    error.value = err.message || err; 
+  } finally {
+    loading.value = false;
+  }
+};
 </script>
 
 <template>
@@ -60,6 +82,10 @@ const loading = ref(false);
                 class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-teal-400 sm:text-sm/6"
               />
             </div>
+          </div>
+
+          <div v-if="error" class="mt-4 p-2 text-xs uppercase tracking-widest font-semibold text-center text-red-500 ">
+            {{ error }}
           </div>
 
           <div>

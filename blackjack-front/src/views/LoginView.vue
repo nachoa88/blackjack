@@ -26,7 +26,7 @@ const handleSubmit = async (e) => {
     authStore.setToken(token);
     router.push("/");
   } catch (err) {
-    error.value = err.message;
+    error.value = err.message || err;
   } finally {
     loading.value = false;
   }
@@ -41,10 +41,6 @@ const handleSubmit = async (e) => {
 
     <div class="sm:mx-auto sm:w-full sm:max-w-sm bg-sky-950/50 rounded-lg shadow-lg p-4">
       <h2 class="mt-4 text-center text-2xl font-bold text-slate-200">Sign in to your account</h2>
-
-      <div v-if="error" class="mt-4 text-red-500 nav-link text-center">
-        {{ error }}
-      </div>
 
       <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-sm">
         <form @submit="handleSubmit" class="space-y-6">
@@ -79,6 +75,10 @@ const handleSubmit = async (e) => {
                 class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-teal-400 sm:text-sm/6"
               />
             </div>
+          </div>
+
+          <div v-if="error" class="mt-4 p-2 text-xs uppercase tracking-widest font-semibold text-center text-red-500 ">
+            {{ error }}
           </div>
 
           <div>
