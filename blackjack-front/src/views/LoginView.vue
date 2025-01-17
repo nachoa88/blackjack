@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from "vue";
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { authService } from "@/services/authService";
 
@@ -10,6 +10,7 @@ const error = ref(null);
 const loading = ref(false);
 
 const router = useRouter();
+const route = useRoute();
 const authStore = useAuthStore();
 
 const handleSubmit = async (e) => {
@@ -24,7 +25,8 @@ const handleSubmit = async (e) => {
     });
 
     authStore.setToken(token);
-    router.push("/");
+    const redirect = route.query.redirect || '/'; // This will redirect either to the previous page or to the home page
+    router.push(redirect);
   } catch (err) {
     error.value = err.message || err;
   } finally {

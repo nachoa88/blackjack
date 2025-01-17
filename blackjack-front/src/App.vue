@@ -31,10 +31,37 @@ const handleLogout = () => {
         <div class="flex items-center gap-6">
           <RouterLink to="/" class="inline-flex items-center nav-link nav-link-hover">Home</RouterLink>
           <RouterLink to="/ranking" class="inline-flex items-center nav-link nav-link-hover">Ranking</RouterLink>
-          <RouterLink to="/players" class="inline-flex items-center nav-link nav-link-hover">Players</RouterLink>
+          <!-- This players link because it's not implemented yet, we need to check roles and permissions to be able to access it -->
+          <!-- <RouterLink to="/players" class="inline-flex items-center nav-link nav-link-hover">Players</RouterLink> -->
 
-          <!-- Authenticated user dropdown -->
-          <!-- <div class="relative">
+          <!-- Guest user login and register -->
+          <div v-if="!authStore.isLoggedIn" class="flex gap-6">
+            <RouterLink
+              to="/login"
+              class="inline-flex items-center nav-link bg-teal-600 hover:bg-teal-700 rounded-lg px-4 py-2"
+            >
+              Log in
+            </RouterLink>
+            <RouterLink
+              to="/register"
+              class="inline-flex items-center nav-link bg-teal-600 hover:bg-teal-700 rounded-lg px-4 py-2"
+            >
+              Register
+            </RouterLink>
+          </div>
+
+          <div v-else  class="flex gap-6">
+            <RouterLink to="/games" class="inline-flex items-center nav-link nav-link-hover">Games</RouterLink>
+
+            <button
+              @click="handleLogout"
+              class="inline-flex items-center nav-link bg-red-700 hover:bg-red-800 rounded-lg px-4 py-2"
+            >
+              Logout
+            </button>
+
+            <!-- Authenticated user dropdown -->
+            <!-- <div class="relative">
             <button
               type="button"
               @click="toggleDropdown"
@@ -57,29 +84,6 @@ const handleLogout = () => {
               <a href="#" class="block px-4 py-2 hover:bg-gray-100">Logout</a>
             </div>
           </div> -->
-
-          <!-- Guest user login and register -->
-          <div v-if="!authStore.isLoggedIn" class="flex gap-4">
-            <RouterLink
-              to="/login"
-              class="inline-flex items-center nav-link bg-teal-600 hover:bg-teal-700 rounded-lg px-4 py-2"
-            >
-              Log in
-            </RouterLink>
-            <RouterLink
-              to="/register"
-              class="inline-flex items-center nav-link bg-teal-600 hover:bg-teal-700 rounded-lg px-4 py-2"
-            >
-              Register
-            </RouterLink>
-          </div>
-          <div v-else>
-            <button
-              @click="handleLogout"
-              class="inline-flex items-center nav-link bg-red-700 hover:bg-red-800 rounded-lg px-4 py-2"
-            >
-              Logout
-            </button>
           </div>
         </div>
         <!-- Hamburger Menu -->

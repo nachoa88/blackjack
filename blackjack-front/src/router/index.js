@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { useAuthStore } from '../stores/useAuthStore'
 import HomeView from '../views/HomeView.vue'
 
 const router = createRouter({
@@ -18,6 +19,13 @@ const router = createRouter({
       path: "/players",
       name: "players",
       component: () => import("../views/PlayersView.vue"),
+      meta: { requiresAuth: true },
+    },
+    {
+      path: "/games",
+      name: "games",
+      component: () => import("../views/GamesView.vue"),
+      meta: { requiresAuth: true },
     },
     {
       path: "/login",
@@ -31,5 +39,21 @@ const router = createRouter({
     }
   ],
 })
+
+// Global route guard
+router.beforeEach((to, from, next) => {
+  const authStore = useAuthStore();
+
+  // Check if route requires auth
+  if (to.meta.requiresAuth && !authStore.isLoggedIn) {
+     // Redirect to login with return URL
+     next({ 
+      path: '/login', 
+      query: { redirect: to.fullPath } 
+    })
+  } else {
+    next() // Proceed normally
+  }
+});
 
 export default router
