@@ -9,9 +9,9 @@ const api = axios.create({
 });
 export default api;
 
-// Interceptors could be applied in a separated file if the application grows.
+// Interceptors could be applied in a separated file if the application gets bigger.
 
-// Request interceptor 
+// Request interceptor
 api.interceptors.response.use(
   // Success handler - return data directly
   (response) => response.data,
@@ -25,26 +25,46 @@ api.interceptors.response.use(
 
     switch (error.response.status) {
       case 400:
-        // Bad request - validation errors
         console.error("Bad request:", error.response.data);
         return Promise.reject(error.response.data);
 
+      case 401:
+        console.error("Unauthorized access");
+        return Promise.reject(error.response.data);
+
+      case 403:
+        console.error("Forbidden access:", error.response.data);
+        return Promise.reject(error.response.data);
+
       case 404:
-        // Not found - ranking doesn't exist
-        console.error("Resource not found");
-        return Promise.reject(new Error("Resource not found"));
+        console.error("Resource not found:", error.response.data);
+        return Promise.reject(error.response.data);
+
+      case 422:
+        console.error("Validation error:", error.response.data);
+        return Promise.reject(error.response.data);
 
       case 500:
-        // Server error
         console.error("Server error:", error.response.data);
-        return Promise.reject(new Error("Internal server error"));
+        return Promise.reject(error.response.data);
 
       default:
         console.error("API error:", error.response.data);
-        return Promise.reject(error);
+        return Promise.reject(error.response.data);
     }
   }
 );
 
-// Later I'll need to add the Auth interceptor
-
+// Auth interceptor
+api.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
