@@ -8,7 +8,7 @@ class GameService
 {
     public function getPlayers()
     {
-        return User::role('player')->get();
+        return User::role('player')->with('games')->get();
     }
 
     public function getGameStats(User $user): array
@@ -16,17 +16,23 @@ class GameService
         // Get the game stats of a user.
         $totalGames = $user->games->count();
 
-        $wins = $user->wins;
-        $losses = $user->losses;
-        $ties = $user->ties;
+        // It's not necessary to calculate the percentages if the user has not played any games.
+        if ($totalGames === 0) {
+            return [
+                'win_percentage' => 0,
+                'lose_percentage' => 0,
+                'tie_percentage' => 0,
+                'total_games' => 0,
+            ];
+        }
 
         return [
-            'win_percentage' => $totalGames > 0 ? round(($wins / $totalGames) * 100, 2) : 0,
-            'lose_percentage' => $totalGames > 0 ? round(($losses / $totalGames) * 100, 2) : 0,
-            'tie_percentage' => $totalGames > 0 ? round(($ties / $totalGames) * 100, 2) : 0,
+            'win_percentage' => round(($user->wins / $totalGames) * 100, 2),
+            'lose_percentage' => round(($user->losses / $totalGames) * 100, 2),
+            'tie_percentage' => round(($user->ties / $totalGames) * 100, 2),
+            'total_games' => $totalGames,
         ];
     }
-
 
     // Calculate the game stats for all the players.
     public function calculateRanking()
@@ -34,10 +40,8 @@ class GameService
         $users = $this->getPlayers();
         // Get the game stats for all the players.
         foreach ($users as $user) {
-            // Call the Accessor function from user model to get the game stats.
-            $userStats = $this->getGameStats($user);
-            // Add the game stats to the user object.
-            $user->gameStats = $userStats;
+            // Call the Accessor function from user model to get the game stats and assign it to the user object.
+            $user->gameStats = $this->getGameStats($user);
         }
 
         return $users;

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Annotations\OpenApi\Controllers;
+namespace App\Annotations\OpenApi\Controllers\Auth;
 
 /**
  * @OA\Post(
