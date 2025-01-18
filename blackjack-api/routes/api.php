@@ -3,11 +3,22 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\GameController;
-use App\Http\Controllers\Auth\AuthenticatedUserController;
-use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\RankingController;
 
-// PROTECTED ROUTES
+// Authentication routes (register and login)
+Route::post('/players', [RegisterController::class, 'register']);
+Route::post('/login', [AuthController::class, 'login']);
+
+// Protected routes
+// Route::middleware('auth:api')->group(function () {
+//     Route::prefix('players/{player}')->group(function () {
+//         Route::get('games', [GameController::class, 'index']);
+//         Route::post('games', [GameController::class, 'store']);
+//         Route::delete('games/{game}', [GameController::class, 'destroy']);
+//     });
+// });
 Route::middleware('auth:api')->group(function () {
     // ACCESSED BY PLAYER:
     // PUT /players/{id} : modifica el nom del jugador/a.
@@ -27,10 +38,7 @@ Route::middleware('auth:api')->group(function () {
 });
 
 // PUBLIC ROUTES
-// POST /players : crea un jugador/a.
-Route::post('/players', [RegisteredUserController::class, 'register']);
-// POST /login : autentica un jugador/a.
-Route::post('/login', [AuthenticatedUserController::class, 'login']);
+
 // GET /players/ranking: retorna el rànquing mitjà de tots els jugadors/es del sistema. És a dir, el percentatge mitjà d’èxits.
 Route::get('/players/ranking', [RankingController::class, 'ranking']);
 // GET /players/ranking/loser: retorna el jugador/a amb pitjor percentatge d’èxit.

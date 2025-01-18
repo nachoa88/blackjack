@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Annotations\OpenApi;
 
 use OpenApi\Annotations as OA;
 
@@ -45,6 +45,4 @@ use OpenApi\Annotations as OA;
  * )
  */
 
-class SwaggerConfig
-{
-}
+class InfoAnnotation {}

@@ -7,21 +7,18 @@ use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 
 abstract class TestCase extends BaseTestCase
 {
-    // This execute migrations before testing???
     use RefreshDatabase;
 
     // This is to seed the database before running each test.
     protected $seed = true;
-    protected $accessToken = true;
-
-    // VER JUNTO CON CLIENT HOW THIS WORK.
+    // Necessary to avoid the error in tests that use the console.
     public $mockConsoleOutput = false;
 
     public function setUp(): void
     {
         parent::setUp();
         
-        // Pass and create the Personal Access Client 
+        // Create the Passport clients
         $this->artisan('passport:client --personal --no-interaction');
     }
 }
