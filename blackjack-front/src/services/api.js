@@ -1,7 +1,8 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "https://blackjack-api.ignacioalbiol.es/api",
+  // baseURL: "https://blackjack-api.ignacioalbiol.es/api",
+  baseURL: "http://localhost:8000/api",
   timeout: 5000, // Set the timeout to 5 seconds, if the request takes longer than that, it will be cancelled
   headers: {
     "Content-Type": "application/json",

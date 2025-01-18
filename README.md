@@ -1,31 +1,67 @@
-# BLACKJACK - Back:Laravel API REST / Front:VueJS
-Utilitzat `docker compose` command amb el fitxer `docker-compose.yml` i un `Dockerfile` personalitzat per crear els contenidors de PHP i Laravel i el de MySQL amb les conexions corresponents. Instal·lat Laravel amb PHP composer: `composer create-project laravel/laravel test-app`.
+# BLACKJACK - Back: Laravel API REST / Front: VueJS
 
-### Laravel MVC ---> S'ha de modificar la informació i anar actualitzant.
-## Funcionalitats bàsiques + Seguretat + Testing
-1) Instal·lat passport amb `php artisan install:api --passport`i Spatie amb `composer require spatie/laravel-permission`, per ùltim he publicat la migració amb `php artisan vendor:publish --provider="Spatie\Permission\PermissionServiceProvider"`. Com he escollit treballar amb UUID, s'han de fer viares modificacions, veure la documentació de Spatie.
-La estructura de dades compta amb les seves migracions i seeds per poder fer una prova del funcionament de la API.
-S'han definit els rols i permissos per cada endpoint. Hi ha un primer control general d'autenticació mitjançant el `middleware` i després un més específic amb `Policies`, en les quals es verifica si el usuari que vol accedir a l'endpoint té les acreditacions necessàries.
+Este proyecto combina una API REST construida con Laravel (backend) y una aplicación frontend desarrollada con Vue.js. La configuración se realiza mediante contenedores Docker utilizando un único archivo `docker-compose.yml` que se encuentra en la raíz para gestionar ambos servicios junto con una base de datos MySQL. El mismo requiere de un archivo `.env` con los datos para la conexión a la base de datos.
 
-2) Testing: Modificat `phpunit.xml` per utilitzar `SQLite` per fer els tests. També s'han afegit algunes dades en `TestCase.php` per fer servir el trait `RefreshDatabase` que farà les migracions, el `$seed` i `accessToken`. La estructura dels tests serà la mateixa que els controllers (Controllers, Controllers/Auth, etc.).      
+## Requisitos previos
 
-## Documentació en Swagger
-1) Documentada l'API amb `Swagger`, feta una configuració bàsica per definir info, server, security schema i tags. També he afegit els schemas pels models d'usuaris i games.
+- Docker y Docker Compose instalados en tu máquina.
 
+## Configuración
 
+### Archivos necesarios
 
-## Fet amb Blackjack enlloc de daus
-#### Regles bàsiques de Blackjack:
-- El joc es juga entre un crupier i un o més jugadors. Cada jugador juga individualment contra el crupier. De moment, només permetem un jugador.
+1. **Archivo `.env` para variables de entorno**  
+   Crea un archivo `.env` en la raíz del proyecto con la siguiente información básica para conectar la base de datos dentro de los contenedores:
 
-- Al començament del joc, el crupier reparteix dues cartes a cada jugador i dues cartes a ell mateix (ara mateix, només es pot jugar 1 vs crupier).
+   ```env
+   # Variables necesarias para conectar la base de datos
+   DB_PASSWORD=yourPassword
+   DB_DATABASE=yourDatabase
+   ```
 
-- L'objectiu del joc és que el valor total de les teves cartes sigui el més proper possible a 21 sense passar-se. El valor d'una mà és la suma dels valors de les cartes individuals. Les cartes numerades (2-10) valen el seu valor facial, les cartes de figura (Sota, Reina, Rei) valen 10, i els Asos poden valer 1 o 11, el que sigui més beneficiós per al jugador.
+2. **Archivos `.gitignore`**  
+   Asegúrate de que el archivo `.env` esté listado en el `.gitignore` para evitar versionar información sensible.
 
-- Si el total d'un jugador és més alt que el del crupier (o si el crupier es passa), el jugador guanya. Si el total del crupier és més alt, el jugador perd. En cas d'empat, el jugador ni guanya ni perd (és un "empat").
+### Estructura del proyecto
 
+El proyecto está organizado de la siguiente manera:
 
-Característiques possibles:
-- Una de les cartes del crupier es reparteix boca amunt, i l'altra es reparteix boca avall.
-- Després de la repartició inicial, cada jugador té l'opció de "pedir" (agafar una altra carta) o "plantar-se" (no agafar més cartes). Els jugadors poden pedir tantes vegades com vulguin fins que es planten o es "passen" (superen 21).
-- Un cop tots els jugadors han acabat els seus torns, el crupier revela la seva carta oculta i ha de pedir fins que el seu total sigui 17 o més alt.
+```
+.
+├── blackjack-api        # Carpeta del backend (Laravel API)
+│   ├── Dockerfile       # Dockerfile para el backend
+│   └── ...              # Archivos del proyecto Laravel
+├── blackjack-front      # Carpeta del frontend (Vue.js)
+│   ├── Dockerfile       # Dockerfile para el frontend
+│   └── ...              # Archivos del proyecto Vue.js
+├── docker-compose.yml   # Configuración unificada de Docker
+└── README.md            # Este archivo
+```
+
+### Uso
+
+#### 1. Construcción y arranque de los contenedores
+
+Ejecuta el siguiente comando desde la raíz del proyecto: `docker compose up --build -d`. Esto levantará tres contenedores:
+
+- blackjack-api: Servidor PHP con Laravel.
+- blackjack-front: Servidor de desarrollo para Vue.js.
+- blackjack-db: Base de datos MySQL.
+
+#### 2. Acceso a los servicios
+
+- Frontend (Vue.js): Disponible en [http://localhost:5173](http://localhost:5173)
+- Backend (Laravel): Disponible en [http://localhost:8000](http://localhost:8000)
+- Base de datos (MySQL): Puerto: 3306, el resto de datos configurados en el `.env`
+
+#### 3. Ingreso a la terminal de los contenedores
+
+Desde la raíz del proyecto, puedes hacerlo a través de los siguientes comandos:
+
+- Backend (Laravel): `docker exec -it blackjack-api bash`
+- Frontend (Vue.js): `docker exec -it blackjack-front sh`
+- Base de datos (MySQL): `docker exec -it blackjack-db mysql -u root -p`
+
+### Notas adicionales
+
+Si necesitas ejecutar el frontend o backend por separado, puedes usar los archivos `docker-compose.yml` individuales en las carpetas `blackjack-api` y `blackjack-front`. El archivo `docker-compose.yml` en la raíz del proyecto centraliza la configuración para levantar todo el stack al mismo tiempo.

@@ -1,0 +1,36 @@
+services:
+  laravel-app:
+    container_name: blackjack-api
+    build:
+      context: ./blackjack-api
+    ports:
+      - "8000:80"
+    volumes:
+      - ./blackjack-api:/var/www/html
+    depends_on:
+      - db
+
+  vue-app:
+    container_name: blackjack-front
+    build:
+      context: ./blackjack-front
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./blackjack-front:/blackjack-front
+    depends_on:
+      - laravel-app
+
+  db:
+    image: mysql:8.0
+    container_name: blackjack-db
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_DATABASE}
+    volumes:
+      - db_data:/var/lib/mysql
+
+volumes:
+  db_data:
