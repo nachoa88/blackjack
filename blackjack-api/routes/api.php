@@ -7,42 +7,29 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\RankingController;
 
-// Authentication routes (register and login)
+// Public routes:
 Route::post('/players', [RegisterController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
-
-// Protected routes
-// Route::middleware('auth:api')->group(function () {
-//     Route::prefix('players/{player}')->group(function () {
-//         Route::get('games', [GameController::class, 'index']);
-//         Route::post('games', [GameController::class, 'store']);
-//         Route::delete('games/{game}', [GameController::class, 'destroy']);
-//     });
-// });
-Route::middleware('auth:api')->group(function () {
-    // ACCESSED BY PLAYER:
-    // PUT /players/{id} : modifica el nom del jugador/a.
-    Route::put('/players/{id}', [UserController::class, 'update']);
-    // GET /players/{id}/games: retorna el llistat de jugades per un jugador/a.
-    Route::get('/players/{id}/games', [GameController::class, 'show']);
-    // POST /players/{id}/games/ : un jugador/a específic comença una partida.
-    Route::post('/players/{id}/games', [GameController::class, 'store']);
-    // DELETE /players/{id}/games: elimina les tirades del jugador/a.
-    Route::delete('/players/{id}/games', [GameController::class, 'destroyAll']);
-
-    // ACCESSED BY MODERATOR & SUPER-ADMIN:
-    // GET /players: retorna el llistat de tots els jugadors/es del sistema amb el seu percentatge mitjà d’èxits 
-    Route::get('/players', [UserController::class, 'getAll']);
-    // DELETE /players/{id}: elimina un jugador/a del sistema.
-    Route::delete('/players/{id}', [UserController::class, 'destroy']);
-});
-
-// PUBLIC ROUTES
 
 Route::get('/players/ranking', [RankingController::class, 'ranking']);
 Route::get('/players/ranking/loser', [RankingController::class, 'worstPlayer']);
 Route::get('/players/ranking/winner', [RankingController::class, 'bestPlayer']);
 
+// Protected routes:
+Route::middleware('auth:api')->group(function () {
+    // Accesed by player:
+    Route::put('/players/{user}', [UserController::class, 'update']);
+
+    Route::prefix('players/{user}')->group(function () {
+        Route::get('games', [GameController::class, 'show']);
+        Route::post('games', [GameController::class, 'store']);
+        Route::delete('games', [GameController::class, 'destroyAll']);
+    });
+
+    // Accesed by admin and moderator:
+    Route::get('/players', [UserController::class, 'getAll']);
+    Route::delete('/players/{user}', [UserController::class, 'destroy']);
+});
 
 // ENDPOINTS PER MILLORAR JOC:
 // Route::post('/players/{id}/games/{game_id}/hit', [GameController::class, 'hit']);

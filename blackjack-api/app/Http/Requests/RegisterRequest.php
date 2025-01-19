@@ -3,36 +3,34 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use App\Models\User;
-
+use Illuminate\Validation\Rule;
 
 class RegisterRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
     public function authorize(): bool
     {
         return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
-     */
     public function rules(): array
     {
         return [
             'nickname' => [
-                function ($attribute, $value, $fail) {
-                    if ($value !== 'Anonymous' && User::where('nickname', $value)->exists()) {
-                        $fail('The ' . $attribute . ' has already been taken.');
-                    }
-                },
+                'nullable',
+                'string',
+                Rule::unique('users', 'nickname')->where(function ($query) {
+                    return $query->where('nickname', '!=', 'Anonymous');
+                }),
             ],
             'email' => 'required|email|unique:users',
             'password' => 'required|min:8',
         ];
+    }
+
+    protected function prepareForValidation(): void
+    {
+        $this->merge([
+            'nickname' => $this->nickname ?? 'Anonymous',
+        ]);
     }
 }

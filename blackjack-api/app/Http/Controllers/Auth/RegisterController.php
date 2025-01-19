@@ -17,7 +17,7 @@ class RegisterController extends Controller
 
         $user = User::create([
             'uuid' => Str::uuid(),
-            'nickname' => $request->nickname ?? 'Anonymous',
+            'nickname' => $request->nickname,
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);

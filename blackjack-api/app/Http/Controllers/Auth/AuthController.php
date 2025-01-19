@@ -19,7 +19,7 @@ class AuthController extends Controller
         if (!$user || !Hash::check($credentials['password'], $user->password)) {
             return response()->json([
                 'message' => 'Invalid credentials'
-            ], 400);
+            ], 401);
         }
 
         $token = $user->createToken('loginToken')->accessToken;
@@ -31,6 +31,6 @@ class AuthController extends Controller
                 'id' => $user->uuid,
                 'nickname' => $user->nickname
             ]
-        ], 200);
+        ]);
     }
 }
